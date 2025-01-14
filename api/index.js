@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
+import authRouter from "./routes/auth.route.js";
 dotenv.config();
 mongoose
   .connect(process.env.MONGO)
@@ -13,6 +14,9 @@ mongoose
   }); //mongoose.connect("application string from the mongodb website")
 
 const app = express();
+
+//To enable the serbr to accept json we use app.use(express.json())
+app.use(express.json());
 app.listen(3000, () => {
   console.log("Server is runnig at port 3000");
 });
@@ -24,3 +28,6 @@ app.listen(3000, () => {
 // });
 app.use("/api/user", userRouter);
 //it will give the response to api/user/test
+
+//signup route
+app.use("/api/auth", authRouter);
