@@ -31,3 +31,18 @@ app.use("/api/user", userRouter);
 
 //signup route
 app.use("/api/auth", authRouter);
+
+//error handling middleware
+app.use((err, req, res, next) => {
+  //err is the error ivoked
+  //req is he request
+  //res is the response
+  //next determines the next middleware to be excuted
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
