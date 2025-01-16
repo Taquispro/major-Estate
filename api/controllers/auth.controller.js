@@ -24,7 +24,7 @@ export const signin = async (req, res, next) => {
     if (!validUser) {
       return next(errorHandler(404, "User not found"));
     }
-    const validPassword = brcyptjs.compareSync(password, validUser.password);
+    const validPassword = brcyptjs.compareSync(password, validUser.password); //comparing password and valid user pasword
     if (!validPassword) return next(errorHandler(401, "Wrong Credentials"));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...rest } = validUser._doc;
