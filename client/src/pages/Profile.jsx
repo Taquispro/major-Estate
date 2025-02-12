@@ -86,24 +86,35 @@ function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
+
+      const updatedData = {
+        username: formData.username || currentUser.username,
+        email: formData.email || currentUser.email,
+        password: formData.password || "", // Send only if changed
+        avatar: formData.avatar || currentUser.avatar, // Ensure avatar is included
+      };
+
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "POST",
+        method: "POST", // Use PUT for updates
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedData),
       });
+
       const data = await res.json();
-      if (data.success === false) {
+      if (!res.ok) {
         dispatch(updateUserFailure(data.message));
         return;
       }
+
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }
   };
+
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
