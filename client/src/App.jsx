@@ -7,10 +7,12 @@ import About from "./pages/About";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateListing from "./pages/createListing";
+import Chatbox from "./components/Chatbox";
 function App() {
   return (
     <BrowserRouter>
       <Header />
+      <Chatbox />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<Signin />} />
