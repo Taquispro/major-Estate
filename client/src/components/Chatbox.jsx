@@ -34,7 +34,9 @@ export default function Chatbox() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4">
+    <div className="fixed bottom-4 right-4 z-[9999]">
+      {" "}
+      {/* Ensures it's always on top */}
       {!open ? (
         <button
           className="rounded-full p-3 shadow-lg bg-blue-500 text-white hover:bg-blue-600"
@@ -43,7 +45,7 @@ export default function Chatbox() {
           <MessageCircle size={24} />
         </button>
       ) : (
-        <div className="w-80 h-96 bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
+        <div className="w-80 h-96 bg-white shadow-lg rounded-lg flex flex-col overflow-hidden border border-gray-300">
           <div className="bg-blue-500 text-white p-3 flex justify-between items-center">
             <span>Chat with AI</span>
             <button onClick={() => setOpen(false)}>

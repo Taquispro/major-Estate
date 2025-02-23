@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CreateListing from "./pages/createListing";
 import Chatbox from "./components/Chatbox";
 import UpdateListing from "./pages/updateListing";
+import Listing from "./pages/Listing";
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +29,7 @@ function App() {
         </Route>
 
         <Route path="/about" element={<About />} />
+        <Route path="/listing/:listingId" element={<Listing />} />
       </Routes>
     </BrowserRouter>
   );
