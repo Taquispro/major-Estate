@@ -5,6 +5,7 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 dotenv.config();
 mongoose
   .connect(process.env.MONGO)
@@ -14,7 +15,7 @@ mongoose
   .catch((err) => {
     console.log(err);
   }); //mongoose.connect("application string from the mongodb website")
-
+const __dirname = path.resolve();
 const app = express();
 
 //To enable the serbr to accept json we use app.use(express.json())
@@ -35,6 +36,10 @@ app.use("/api/user", userRouter);
 //signup route
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
+app.use(express.static(path.join(__dirname, "/client/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 //error handling middleware
 app.use((err, req, res, next) => {
