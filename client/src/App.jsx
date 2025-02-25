@@ -10,6 +10,7 @@ import CreateListing from "./pages/createListing";
 import Chatbox from "./components/Chatbox";
 import UpdateListing from "./pages/updateListing";
 import Listing from "./pages/Listing";
+import Search from "./pages/Search";
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-listing" element={<CreateListing />} />
+
           <Route
             path="/update-listing/:listingId"
             element={<UpdateListing />}
@@ -30,6 +32,7 @@ function App() {
 
         <Route path="/about" element={<About />} />
         <Route path="/listing/:listingId" element={<Listing />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );
