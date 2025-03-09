@@ -11,6 +11,7 @@ import { app } from "../firebase";
 import { getAuth } from "firebase/auth";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import MapComponent from "../components/MapComponent";
 function CreateListing() {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
@@ -18,11 +19,22 @@ function CreateListing() {
   const [imageUploadError, setImageUploadError] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState({
+    locality: "",
+    street: "",
+    long: "",
+    lat: "",
+  });
+
   const [formData, setFormData] = useState({
     imageUrls: [],
     name: "",
     description: "",
     address: "",
+    locality: "",
+    landmark: "",
+    long: 0,
+    lat: 0,
     type: "rent",
     bedrooms: 1,
     bathrooms: 1,
@@ -31,6 +43,10 @@ function CreateListing() {
     offer: false,
     parking: false,
     furnished: false,
+    area: 50,
+    distance: 0,
+    ameneties: 0,
+    balconies: 0,
   });
   console.log(formData);
   const [uploading, setUploading] = useState(false);
@@ -40,6 +56,19 @@ function CreateListing() {
       handleFileUpload();
     }
   }, [files]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      locality: location.locality,
+      landmark: location.street,
+      long: location.long,
+      lat: location.lat,
+      address:
+        `${prevData.name} ${location.locality} ${location.street}`.trim(),
+    }));
+  }, [location]);
+
   const handleFileUpload = () => {
     if (!files) return;
     if (!auth.currentUser) {
@@ -108,33 +137,31 @@ function CreateListing() {
     });
   };
   const handleChange = (e) => {
-    if (e.target.id === "sale" || e.target.id === "rent") {
-      setFormData({
-        ...formData,
-        type: e.target.id,
-      });
+    const { id, value, type, checked } = e.target;
+
+    if (id === "sale" || id === "rent") {
+      setFormData({ ...formData, type: id });
+    } else if (id === "parking" || id === "furnished" || id === "offer") {
+      setFormData({ ...formData, [id]: checked });
+    } else if (type === "number" || type === "text" || type === "textarea") {
+      setFormData({ ...formData, [id]: value });
     }
+
+    // Automatically update address
     if (
-      e.target.id === "parking" ||
-      e.target.id === "furnished" ||
-      e.target.id === "offer"
+      id === "name" ||
+      id === "locality" ||
+      id === "landmark" ||
+      id === "street"
     ) {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.checked,
-      });
-    }
-    if (
-      e.target.type === "number" ||
-      e.target.type === "text" ||
-      e.target.type === "textarea"
-    ) {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.value,
-      });
+      setFormData((prevData) => ({
+        ...prevData,
+        address:
+          `${prevData.name} ${location.locality} ${location.street}`.trim(),
+      }));
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -201,6 +228,12 @@ function CreateListing() {
             onChange={handleChange}
             value={formData.address}
           />
+          <div>
+            <h2>Selected Location</h2>
+            <input type="text" id="locality" value={location.locality} />
+            <input type="text" id="street" value={location.street} />
+            <MapComponent onLocationSelect={setLocation} />
+          </div>
           <div className="flex gap-6 flex-wrap">
             <div className="flex gap-2">
               <input
@@ -279,8 +312,58 @@ function CreateListing() {
                 value={formData.bathrooms}
               />
               <p>Baths</p>
+              <input
+                type="number"
+                id="ameneties"
+                min="1"
+                max="10"
+                required
+                className="p-3 border border-gray-300 rounded-lg"
+                onChange={handleChange}
+                value={formData.ameneties}
+              />
+              <p>Amenities</p>
+              <input
+                type="number"
+                id="balconies"
+                min="1"
+                max="10"
+                required
+                className="p-3 border border-gray-300 rounded-lg"
+                onChange={handleChange}
+                value={formData.balconies}
+              />
+              <p>Balconies</p>
             </div>
             <div className="flex items-center gap-2">
+              <input
+                type="number"
+                id="distance"
+                min="0"
+                max="10"
+                required
+                className="p-3 border border-gray-300 rounded-lg"
+                onChange={handleChange}
+                value={formData.distance}
+              />
+              <div className="flex flex-col items-center">
+                <p>Distance from railway Station</p>
+                <span className="text-xs">(km)</span>
+              </div>
+              <input
+                type="number"
+                id="area"
+                min="50"
+                max="10000000"
+                required
+                className="p-3 border border-gray-300 rounded-lg"
+                onChange={handleChange}
+                value={formData.area}
+              />
+              <div className="flex flex-col items-center">
+                <p>Area</p>
+                <span className="text-xs">(sq m)</span>
+              </div>
               <input
                 type="number"
                 id="regularPrice"
@@ -293,7 +376,7 @@ function CreateListing() {
               />
               <div className="flex flex-col items-center">
                 <p>Regular price</p>
-                <span className="text-xs">($ / month)</span>
+                <span className="text-xs">(₹ (in lakhs))</span>
               </div>
             </div>
             {formData.offer && (
@@ -310,7 +393,7 @@ function CreateListing() {
                 />
                 <div className="flex flex-col items-center">
                   <p>Discounted price</p>
-                  <span className="text-xs">($ / month)</span>
+                  <span className="text-xs">(₹ / month)</span>
                 </div>
               </div>
             )}

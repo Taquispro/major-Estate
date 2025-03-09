@@ -13,6 +13,22 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    locality: {
+      type: String,
+      required: true,
+    },
+    landmark: {
+      type: String,
+      required: true,
+    },
+    long: {
+      type: Number,
+      required: true,
+    },
+    lat: {
+      type: Number,
+      required: true,
+    },
     regularPrice: {
       type: Number,
       required: true,
@@ -53,8 +69,24 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    area: {
+      type: Number,
+      required: true,
+    },
+    distance: {
+      type: Number,
+      required: true,
+    },
+    ameneties: {
+      type: Number,
+      required: true,
+    },
+    balconies: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
-const Listing = mongoose.model("Listing", listingSchema);
+const Listing = mongoose.model("Listing2", listingSchema);
 export default Listing;
