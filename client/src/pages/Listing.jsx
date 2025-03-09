@@ -35,7 +35,7 @@ function Listing() {
       const fetchPredictedPrice = async () => {
         try {
           const res = await fetch(
-            `https://priceprediction-1-hqz4.onrender.com/${params.listingId}`
+            `https://priceprediction-1-hqz4.onrender.com/predict/${params.listingId}`
           );
           const data = await res.json();
           if (data) {
