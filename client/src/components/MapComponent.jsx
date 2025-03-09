@@ -14,7 +14,7 @@ const center = { lat: 19.076, lng: 72.877 }; // Mumbai center
 
 const MapComponent = ({ onLocationSelect }) => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_CHATBOX,
+    googleMapsApiKey: import.meta.env.VITE_MAP,
     libraries,
   });
 

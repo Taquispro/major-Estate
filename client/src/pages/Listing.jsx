@@ -148,7 +148,7 @@ function Listing() {
                   margin: "20px 0",
                 }}
               >
-                <LoadScript googleMapsApiKey={import.meta.env.VITE_CHATBOX}>
+                <LoadScript googleMapsApiKey={import.meta.env.VITE_MAP}>
                   <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     center={{ lat: listing.lat, lng: listing.long }}
