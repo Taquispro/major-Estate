@@ -35,7 +35,7 @@ function Listing() {
       const fetchPredictedPrice = async () => {
         try {
           const res = await fetch(
-            `http://127.0.0.1:8000/predict/${params.listingId}`
+            `https://priceprediction-1-hqz4.onrender.com/${params.listingId}`
           );
           const data = await res.json();
           if (data) {
