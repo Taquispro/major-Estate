@@ -67,7 +67,7 @@ const MapComponent = ({ onLocationSelect }) => {
 const fetchAddress = async (location, onLocationSelect) => {
   const { lat, lng } = location;
   const response = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDIwDj-XvF5wJOsAQ9v5GLuMWQ7pgz9HoE`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${import.meta.env.VITE_MAP}`
   );
   const data = await response.json();
   if (data.results.length > 0) {
